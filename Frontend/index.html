@@ -1,1 +1,202 @@
+import os
+os.makedirs("templates", exist_ok=True)
 
+# ---------------- HOME PAGE ----------------
+index_html = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Abhradeep's Chatbot</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            background: #000814;
+            color: #39ff14;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridMove 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+        }
+
+        h1 {
+            font-size: 42px;
+            color: #00e5ff;
+            text-shadow: 0 0 10px #00e5ff, 0 0 25px #00e5ff, 0 0 45px #0072ff;
+            letter-spacing: 1px;
+            text-align: center;
+            animation: flicker 3s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 22%, 24%, 55% { opacity: 0.75; }
+        }
+
+        .tagline {
+            margin-top: 12px;
+            font-size: 16px;
+            color: #39ff14;
+            text-shadow: 0 0 8px #39ff14;
+            text-align: center;
+        }
+
+        .chat-btn {
+            margin-top: 40px;
+            padding: 16px 44px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000814;
+            background: linear-gradient(135deg, #00e5ff, #39ff14);
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            box-shadow: 0 0 20px #00e5ff, 0 0 40px rgba(0, 229, 255, 0.5);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .chat-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 30px #00e5ff, 0 0 60px #39ff14;
+        }
+
+        .info-section {
+            margin-top: 80px;
+            max-width: 800px;
+            width: 100%;
+            border: 1px solid rgba(0, 229, 255, 0.4);
+            border-radius: 16px;
+            padding: 30px;
+            background: rgba(0, 20, 40, 0.5);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.15);
+        }
+
+        .info-section h2 {
+            color: #00e5ff;
+            text-shadow: 0 0 10px #00e5ff;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 200px;
+            background: rgba(0, 8, 20, 0.6);
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            border-color: #39ff14;
+        }
+
+        .step .icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .step h3 {
+            color: #39ff14;
+            text-shadow: 0 0 6px #39ff14;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            color: #b8ffcf;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: rgba(0, 229, 255, 0.5);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="container">
+        <h1>⚡ ABHRADEEP'S CHATBOT ⚡</h1>
+        <p class="tagline">An AI assistant powered by Groq — fast, smart, always on.</p>
+
+        <a href="/chat" class="chat-btn">💬 Chat with AI</a>
+
+        <div class="info-section">
+            <h2>How This Web App Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="icon">⌨️</div>
+                    <h3>1. You Type</h3>
+                    <p>You send a message through the chat page's input box.</p>
+                </div>
+                <div class="step">
+                    <div class="icon">🌐</div>
+                    <h3>2. Flask Handles It</h3>
+                    <p>Your message is sent to a Flask backend running behind the scenes.</p>
+                </div>
+                <div class="step">
+                    <div class="icon">🧠</div>
+                    <h3>3. Groq AI Responds</h3>
+                    <p>The backend calls Groq's LLM (gpt-oss-120b) to generate a smart reply.</p>
+                </div>
+                <div class="step">
+                    <div class="icon">💬</div>
+                    <h3>4. You See the Reply</h3>
+                    <p>The response is sent back and displayed instantly in the chat window.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>Built with Flask, HTML, CSS & JavaScript · Powered by Groq API</footer>
+    </div>
+</body>
+</html>
+"""
+
+with open("templates/index.html", "w") as f:
+    f.write(index_html)
+
+print("index.html (home page) created")
